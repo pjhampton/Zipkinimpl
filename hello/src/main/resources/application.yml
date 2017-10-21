@@ -1,0 +1,11 @@
+
+spring:
+    application:
+        name: "HelloApp"
+
+    zipkin:
+        baseUrl: "http://localhost:9411"
+
+    sleuth:
+        sampler:
+            percentage: 0.2
