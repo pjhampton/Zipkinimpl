@@ -1,5 +1,6 @@
 package com.pjhampton.hello;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @SpringBootApplication
@@ -21,6 +25,8 @@ public class HelloApplication {
 
 	@Autowired
 	private RestTemplate restTemplate;
+
+	Gson gson = new Gson();
 
 	@Bean
 	public RestTemplate getRestTemplate() {
@@ -36,7 +42,9 @@ public class HelloApplication {
 	@RequestMapping("/")
 	public String hello() {
 		logger.info("Called hello (home)");
-		return "hello world!";
+		Map<String, String> object = new HashMap<>();
+		object.put("message", "hello world!");
+		return gson.toJson(object);
 	}
 
 	@CrossOrigin

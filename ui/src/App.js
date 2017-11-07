@@ -1,43 +1,48 @@
-import React, { Component } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 import { Tracer, ExplicitContext, BatchRecorder, jsonEncoder } from 'zipkin';
 import wrapFetch from 'zipkin-instrumentation-fetch';
 import { HttpLogger } from 'zipkin-transport-http';
-
 const { JSON_V2 } = jsonEncoder;
 
-class App extends Component {
+const zipkinFetch = wrapFetch(fetch, {
+  tracer: new Tracer({
+    ctxImpl: new ExplicitContext(),
+    recorder: new BatchRecorder({
+      logger: new HttpLogger({
+        endpoint: `http://localhost:9411/api/v1/spans`,
+        jsonEncoder: JSON_V2,
+        fetch,
+      }),
+    }),
+  }),
+  serviceName: 'react',
+  remoteServiceName: 'starwars',
+});
+
+class App extends React.Component {
 
   constructor() {
     super();
+
     this.state = {
-      person: 'Not loaded',
-      fetch: wrapFetch(fetch, {
-        tracer: new Tracer({
-          ctxImpl: new ExplicitContext(),
-          // vvv this doesnt work, we need a recorder vvv
-          recorder:  new HttpLogger({
-            endpoint: 'http://localhost:9411/api/v1/spans',
-            fetch,
-          }),
-        }),
-        remoteServiceName: 'StarWars',
-      }),
-    }
+      person: 'Not loaded'
+    };
 
     this.componentWillMount = this.componentWillMount.bind(this);
   }
 
   componentWillMount() {
     const randomNumber = Math.floor(Math.random() * 10) + 1;
-    this.state.fetch("https://swapi.co/api/people/" + randomNumber)
-      .then(response => response.json())
-      .then(person => this.setState({
-        person: person.name,
-      })
-      ).catch(e => console.error(e));
+    const url = "https://swapi.co/api/people/" + randomNumber;
+    
+    this.setState(() => {
+      return {person: url}
+    })
+
+    zipkinFetch("http://localhost:8080").then(res => res.json()).then(data => console.log(data));
   }
 
   printhello() {
