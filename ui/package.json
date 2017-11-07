@@ -3,8 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cors": "^2.8.4",
+    "jquery": "^3.2.1",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "zipkin": "^0.10.1",
+    "zipkin-instrumentation-fetch": "^0.10.1",
+    "zipkin-transport-http": "^0.10.1"
   },
   "devDependencies": {
     "react-scripts": "1.0.17"
