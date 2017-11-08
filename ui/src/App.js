@@ -12,14 +12,14 @@ const zipkinFetch = wrapFetch(fetch, {
     ctxImpl: new ExplicitContext(),
     recorder: new BatchRecorder({
       logger: new HttpLogger({
-        endpoint: `http://localhost:9411/api/v1/spans`,
+        endpoint: "http://localhost:9411/api/v1/spans",
         jsonEncoder: JSON_V2,
         fetch,
       }),
     }),
   }),
-  serviceName: 'react',
-  remoteServiceName: 'starwars',
+  serviceName: 'ui',
+  remoteServiceName: 'hellop',
 });
 
 class App extends React.Component {

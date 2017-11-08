@@ -7,7 +7,7 @@ import zipkin.server.EnableZipkinServer;
 
 @SpringBootApplication
 @EnableZipkinServer
-@CrossOrigin
+// @CrossOrigin
 public class ZipkinserverApplication {
 
 	public static void main(String[] args) {

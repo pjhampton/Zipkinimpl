@@ -38,7 +38,6 @@ public class HelloApplication {
 		return new AlwaysSampler();
 	}
 
-	@CrossOrigin
 	@RequestMapping("/")
 	public String hello() {
 		logger.info("Called hello (home)");
@@ -47,7 +46,6 @@ public class HelloApplication {
 		return gson.toJson(object);
 	}
 
-	@CrossOrigin
 	@RequestMapping("/callhome")
 	public String callhome() {
 		logger.info("Calling home (callhome)");
