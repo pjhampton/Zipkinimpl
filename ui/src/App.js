@@ -12,14 +12,14 @@ const zipkinFetch = wrapFetch(fetch, {
     ctxImpl: new ExplicitContext(),
     recorder: new BatchRecorder({
       logger: new HttpLogger({
-        endpoint: "http://localhost:9411/api/v1/spans",
+        endpoint: "http://localhost:9411/api/v2/spans",
         jsonEncoder: JSON_V2,
         fetch,
       }),
     }),
   }),
   serviceName: 'ui',
-  remoteServiceName: 'hellop',
+  remoteServiceName: 'helloapp',
 });
 
 class App extends React.Component {
@@ -37,7 +37,7 @@ class App extends React.Component {
   componentWillMount() {
     const randomNumber = Math.floor(Math.random() * 10) + 1;
     const url = "https://swapi.co/api/people/" + randomNumber;
-    
+
     this.setState(() => {
       return {person: url}
     })
