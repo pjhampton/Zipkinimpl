@@ -38,11 +38,12 @@ class App extends React.Component {
     const randomNumber = Math.floor(Math.random() * 10) + 1;
     const url = "https://swapi.co/api/people/" + randomNumber;
 
+    let message = ""
+    zipkinFetch("http://localhost:8080/callhome").then(res => res.json()).then(data => console.log(data.message));
+
     this.setState(() => {
       return {person: url}
     })
-
-    zipkinFetch("http://localhost:8080").then(res => res.json()).then(data => console.log(data));
   }
 
   printhello() {
