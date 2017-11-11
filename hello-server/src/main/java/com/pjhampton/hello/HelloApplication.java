@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,6 +28,9 @@ public class HelloApplication {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@Autowired
+	private Tracer tracer;
+
 	Gson gson = new Gson();
 
 	@Bean
@@ -41,8 +46,10 @@ public class HelloApplication {
 	@RequestMapping("/")
 	public String hello() {
 		logger.info("Called hello (home)");
+		Span span = tracer.createSpan("Hello Method");
 		Map<String, String> object = new HashMap<>();
 		object.put("message", "hello world!");
+		tracer.close(span);
 		return gson.toJson(object);
 	}
 
