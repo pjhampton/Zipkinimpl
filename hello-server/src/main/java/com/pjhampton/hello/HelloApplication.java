@@ -47,16 +47,17 @@ public class HelloApplication {
 	public String hello() {
 		logger.info("Called hello (home)");
 		Span span = tracer.createSpan("Hello Method");
-		Map<String, String> object = new HashMap<>();
-		object.put("message", "hello world!");
 		tracer.close(span);
-		return gson.toJson(object);
+		return restTemplate.getForObject("http://localhost:7070", String.class);
 	}
 
 	@RequestMapping("/callhome")
 	public String callhome() {
 		logger.info("Calling home (callhome)");
-		return restTemplate.getForObject("http://localhost:8080", String.class);
+		String name = restTemplate.getForObject("http://localhost:8080", String.class);
+		Map<String, String> object = new HashMap<>();
+		object.put("message", name);
+		return gson.toJson(object);
 	}
 
 	public static void main(String[] args) {
